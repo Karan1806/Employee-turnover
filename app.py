@@ -57,12 +57,25 @@ if model:
         "head_gender":  [head_gender],
     })
 
-
+    # ───────────── Add required missing columns with default values ─────────────
+    missing_columns = {
+        "low_risk": 0,
+        "high_risk": 0,
+        "stress_level": 0.0,
+        "coaching_impact": 0,
+        "personality_score": 0.0,
+        "adaptability": 0.0,
+        "tenure_years": 0.0,
+        "tenure_age_ratio": 0.0,
+        "age_group": "26-35",  # use any category your model recognizes
+    }
+    for col, default_val in missing_columns.items():
+        input_df[col] = default_val
 
     # ───────────── Prediction ─────────────
     if st.button("Predict Turnover"):
         try:
-            # Convert categorical columns to string
+            # Ensure categorical columns are strings
             for col in input_df.select_dtypes(include=["object", "category"]).columns:
                 input_df[col] = input_df[col].astype(str)
 
