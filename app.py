@@ -57,19 +57,7 @@ if model:
         "head_gender":  [head_gender],
     })
 
-    # ───────────── Required Feature Engineering ─────────────
-    input_df["tenure_years"]       = input_df["stag"] / 12
-    input_df["tenure_age_ratio"]   = input_df["stag"] / input_df["age"]
-    input_df["age_group"]          = pd.cut(input_df["age"], bins=[17, 30, 45, 70], labels=["young", "mid", "senior"])
-    input_df["coaching_impact"]    = input_df["coach"].map({"yes": 1, "no": 0}) * input_df["selfcontrol"]
-    input_df["stress_level"]       = input_df["anxiety"] * 1.2 - input_df["selfcontrol"] * 0.8
-    input_df["adaptability"]       = (input_df["independ"] + input_df["novator"]) / 2
-    input_df["personality_score"]  = (
-        input_df["extraversion"] + input_df["independ"] + input_df["selfcontrol"] +
-        input_df["anxiety"] + input_df["novator"]
-    ) / 5
-    input_df["low_risk"]           = (input_df["stress_level"] < 5).astype(int)
-    input_df["high_risk"]          = (input_df["stress_level"] >= 8).astype(int)
+
 
     # ───────────── Prediction ─────────────
     if st.button("Predict Turnover"):
