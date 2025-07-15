@@ -67,7 +67,7 @@ if model:
         "adaptability": 0.0,
         "tenure_years": 0.0,
         "tenure_age_ratio": 0.0,
-        "age_group": "26-35",  # use any category your model recognizes
+        "age_group": "18-55",  # use any category your model recognizes
     }
     for col, default_val in missing_columns.items():
         input_df[col] = default_val
@@ -78,7 +78,21 @@ if model:
             # Ensure categorical columns are strings
             for col in input_df.select_dtypes(include=["object", "category"]).columns:
                 input_df[col] = input_df[col].astype(str)
+            # Manual Label Encoding (must match training!)
+            label_maps = {
+                "coach": {"yes": 1, "no": 0},
+                "gender": {"male": 0, "female": 1},
+                "head_gender": {"male": 0, "female": 1},
+                "industry": {"IT": 0, "HR": 1, "Finance": 2, "Manufacturing": 3},
+                "way": {"car": 0, "bike": 1, "walk": 2, "public": 3},
+                "traffic": {"low": 0, "medium": 1, "high": 2},
+                "profession": {"worker": 0, "manager": 1, "clerk": 2, "technician": 3},
+                "age_group": {"18-25": 0, "26-35": 1, "36-45": 2, "46-60": 3, "60+": 4}
+            }
 
+            for col, mapping in label_maps.items():
+                if col in input_df.columns:
+                    input_df[col] = input_df[col].map(mapping)
             prediction = model.predict(input_df)
             result = "leave" if prediction[0] == 1 else "stay"
             st.subheader("🔎 Prediction Result:")
