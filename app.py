@@ -67,7 +67,7 @@ if model:
         "adaptability": 0.0,
         "tenure_years": 0.0,
         "tenure_age_ratio": 0.0,
-        "age_group": "18-55",  # use any category your model recognizes
+        "age_group": "18-25",  # use any category your model recognizes
     }
     for col, default_val in missing_columns.items():
         input_df[col] = default_val
@@ -93,6 +93,12 @@ if model:
             for col, mapping in label_maps.items():
                 if col in input_df.columns:
                     input_df[col] = input_df[col].map(mapping)
+            st.write("🧪 Processed Input DataFrame:")
+            st.write(input_df)
+
+            if input_df.isnull().any().any():
+                st.error("❗Input contains NaN values. Please check mappings.")
+                st.stop()
             prediction = model.predict(input_df)
             result = "leave" if prediction[0] == 1 else "stay"
             st.subheader("🔎 Prediction Result:")
