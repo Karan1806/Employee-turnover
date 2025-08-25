@@ -15,7 +15,7 @@ def load_model():
 model, encoders = load_model()
 
 # ───────────────────── App Title ─────────────────────
-st.title("💼 Employee Attrition Prediction")
+st.title("💼 Employee Turnover Prediction")
 st.markdown("Predict the likelihood of an employee leaving the company.")
 
 # ───────────────────── Input Form ─────────────────────
